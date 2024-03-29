@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+    <title>IDEA++</title>
+    <style>
+        body {
+            font-family: "Fira Code", monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #e6f2ff;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto; 
+            max-width: 900px;
+        }
+
+        h2 {
+            color: #000d1a;
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        p {
+            text-align: justify;
+            font-size: 14px;
+        }
+
+        .code-editor {
+            width: 97.5%;
+            min-height: 150px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-family: monospace;
+            background-color: #e6f2ff;
+            resize: vertical;
+        }
+
+        .custom-input {
+            width: 97.5%;
+            min-height: 100px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            background-color: #e6f2ff;
+            resize: vertical;
+        }
+
+        .output {
+            width: 97.5%;
+            min-height: 130px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            background-color: #e6f2ff;
+            overflow: auto;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background-color: #99bbff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .stop-btn {
+            background-color: #99bbff;
+        }
+
+        .stop-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Online C++ Compiler By IDEATREX</h2>
+        <p>This is a web-based C++ compiler allowing users to write, compile, and execute C++ code with custom input. It provides real-time output and an intuitive interface for coding.</p>
+        <textarea class="code-editor" id="code" placeholder="Enter your C++ code here..."></textarea>
+        <textarea class="custom-input" id="custom-input" placeholder="Enter custom input for your program..."></textarea>
+        <button class="btn" onclick="compileCode()">Compile & Run</button>
+        <button class="btn stop-btn" onclick="stopCompilation()">Stop</button>
+        <div class="output" id="output"></div>
+        <div id="loading" style="display: none;">Loading...</div> <!-- Loading indicator -->
+    </div>
+
+    <script>
+        function compileCode() {
+            var code = document.getElementById('code').value;
+            var customInput = document.getElementById('custom-input').value;
+
+            var data = {
+                code: code,
+                input: customInput
+            };
+
+            // Show loading spinner
+            document.getElementById('loading').style.display = 'block';
+
+            fetch('/compile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(output => {
+                // Hide loading spinner
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('output').innerHTML = output;
+            })
+            .catch((error) => {
+                // Hide loading spinner
+                document.getElementById('loading').style.display = 'none';
+                console.error('Error:', error);
+                document.getElementById('output').innerHTML = 'An error occurred during compilation.';
+            });
+        }
+
+        function stopCompilation() {
+            // Show loading spinner
+            document.getElementById('loading').style.display = 'block';
+
+            fetch('/stop', {
+                method: 'POST'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(message => {
+                // Hide loading spinner
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('output').innerHTML = message;
+            })
+            .catch((error) => {
+                // Hide loading spinner
+                document.getElementById('loading').style.display = 'none';
+                console.error('Error:', error);
+                document.getElementById('output').innerHTML = 'An error occurred while stopping the compilation.';
+            });
+        }
+    </script>
+</body>
+</html>
