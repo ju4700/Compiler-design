@@ -22,5 +22,4 @@ add_executable(bangla_compiler
     src/main.cpp
 )
 
-target_include_directories(bangla_compiler PRIVATE include)
 target_link_libraries(bangla_compiler ${llvm_libs} fl)
