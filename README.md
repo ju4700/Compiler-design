@@ -174,4 +174,3 @@ This project is licensed under the MIT License. See LICENSE for details.
 ## Acknowledgments
 
 Built with inspiration from compiler design tutorials and the xAI community. Thanks to Flex, Bison, and LLVM developers for their amazing tools.
-```
