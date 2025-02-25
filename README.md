@@ -1,59 +1,72 @@
-# **Bangla Programming Language Compiler (BPL)**
-> **A modern, Unicode-compliant programming language with Bangla syntax.**  
+**BPL** (Bangla Programming Language) is a custom compiler where **keywords, variables, and syntax** are written in **Bangla**. Built with **C++ (Flex, Bison, and LLVM)**, this compiler allows Bangla-speaking developers to write and execute code in their native language.  
 
-🚀 **BPL** (Bangla Programming Language) is a custom programming language designed for **native Bangla syntax and variable naming**. Built with **C++ (Flex, Bison, and LLVM)**, this compiler translates Bangla source code into executable machine instructions, making programming more accessible to Bangla-speaking developers.  
+🔹 **Key Features:**  
+✅ **Fully Bangla-based syntax** (variables, functions, conditionals)  
+✅ **Lexical & syntax analysis** using **Flex & Bison**  
+✅ **Semantic analysis & type checking**  
+✅ **Code generation via LLVM IR**  
+✅ **Cross-platform support** (Windows & Linux)  
+✅ **Unicode support for Bangla identifiers**  
 
-💡 **Key Features:**  
-✅ **Fully Bangla-based Syntax** (Keywords, Variables, Functions)  
-✅ **Lexical Analysis & Parsing** (via **Flex & Bison**)  
-✅ **Semantic Analysis & Type Checking**  
-✅ **Intermediate Representation (IR) with LLVM**  
-✅ **Unicode Support for Bangla Identifiers**  
-✅ **Standard Library for I/O, Math, and Strings**  
-✅ **Cross-Platform Compilation & Execution**  
+💻 **Developed by [ju4700 (Jalal Uddin)](https://github.com/ju4700)**  
 
 ---
 
-## 📖 **Table of Contents**
-- [🚀 Installation](#-installation)
-- [📝 Language Syntax](#-language-syntax)
-- [⚙️ Compilation Workflow](#️-compilation-workflow)
-- [📂 Project Architecture](#-project-architecture)
-- [🔧 Contribution Guidelines](#-contribution-guidelines)
-- [🌍 Roadmap & Future Enhancements](#-roadmap--future-enhancements)
-- [📜 License](#-license)
+## **Table of Contents**
+- [ Installation (Windows & Linux)](#-installation-windows--linux)
+- [ Language Syntax](#-language-syntax)
+- [ Compilation Workflow](#️-compilation-workflow)
+- [ Project Architecture](#-project-architecture)
+- [ Contribution Guidelines](#-contribution-guidelines)
+- [ Roadmap & Future Enhancements](#-roadmap--future-enhancements)
+- [ License](#-license)
 
 ---
 
-## 🚀 **Installation**
-### 🔹 **Prerequisites**
-Ensure the following dependencies are installed:  
-- **C++ Compiler (GCC/Clang/MSVC)**  
-- **Flex** (Lexical Analysis)  
-- **Bison** (Parser Generation)  
-- **LLVM** (Intermediate Representation & CodeGen)  
-- **CMake** (Build System)  
+##  **Installation (Windows & Linux)**  
+### **🔹 Windows (Using MSYS2 & Clang)**  
+#### **Step 1: Install Required Tools**  
+1️⃣ Download and install **MSYS2** from [msys2.org](https://www.msys2.org/).  
+2️⃣ Open **MSYS2 MinGW 64-bit terminal** and install dependencies:  
+   ```sh
+   pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-clang flex bison make git
+   ```
+3️⃣ Clone the repository:  
+   ```sh
+   git clone https://github.com/ju4700/bangla-compiler.git
+   cd bangla-compiler
+   ```
+4️⃣ Build the compiler:  
+   ```sh
+   make
+   ```
+5️⃣ Run a Bangla script:  
+   ```sh
+   ./bpl examples/sample.bgl
+   ```
 
-### 🔹 **Setup Instructions**
+---
+
+### **🔹 Linux (Ubuntu/Debian-based Distros)**
+#### **Step 1: Install Required Dependencies**  
 ```sh
-# Clone the repository
+sudo apt update
+sudo apt install build-essential flex bison clang llvm cmake git
+```
+#### **Step 2: Clone and Build the Compiler**  
+```sh
 git clone https://github.com/ju4700/bangla-compiler.git
 cd bangla-compiler
-
-# Install required dependencies
-sudo apt update
-sudo apt install flex bison clang llvm cmake g++
-
-# Build the compiler
 make
-
-# Run the compiler on a sample Bangla script
+```
+#### **Step 3: Run a Bangla Script**  
+```sh
 ./bpl examples/sample.bgl
 ```
 
 ---
 
-## 📝 **Language Syntax**
+##  **Language Syntax**
 ### 🔹 **Variable Declaration**
 ```plaintext
 সংখ্যা ক = ১০;
@@ -98,7 +111,7 @@ make
 
 ---
 
-## ⚙️ **Compilation Workflow**
+##  **Compilation Workflow**
 ### 🔹 **Processing Steps**
 1️⃣ **Lexical Analysis** → Converts code into tokens.  
 2️⃣ **Parsing** → Builds an **Abstract Syntax Tree (AST)**.  
@@ -114,7 +127,7 @@ make
 
 ---
 
-## 📂 **Project Architecture**
+##  **Project Architecture**
 ```
 BanglaCompiler/
 │── src/
@@ -139,13 +152,13 @@ BanglaCompiler/
 
 ---
 
-## 🔧 **Contribution Guidelines**
-🚀 **Want to contribute?** Follow these steps:  
-1. **Fork the repository** 📌  
-2. **Create a feature branch** (`git checkout -b feature-branch`) 🌿  
-3. **Commit your changes** (`git commit -m "Added new feature"`) ✅  
-4. **Push to GitHub** (`git push origin feature-branch`) 🚀  
-5. **Submit a pull request** for review 🔍  
+##  **Contribution Guidelines**
+ **Want to contribute?** Follow these steps:  
+1️⃣ **Fork the repository**   
+2️⃣ **Create a feature branch** (`git checkout -b feature-branch`)  
+3️⃣ **Commit your changes** (`git commit -m "Added new feature"`)  
+4️⃣ **Push to GitHub** (`git push origin feature-branch`) 
+5️⃣ **Submit a pull request** for review 🔍  
 
 ### **🔹 Coding Standards**
 ✅ Follow **consistent naming conventions**  
@@ -155,7 +168,7 @@ BanglaCompiler/
 
 ---
 
-## 🌍 **Roadmap & Future Enhancements**
+##  **Roadmap & Future Enhancements**
 ✅ **Phase 1**: Core Syntax & Compiler Architecture  
 ✅ **Phase 2**: AST Optimization & Type Checking  
 ✅ **Phase 3**: LLVM Backend for Efficient Code Generation  
@@ -166,11 +179,11 @@ BanglaCompiler/
 
 ---
 
-## 📜 **License**
+##  **License**
 📄 **MIT License**  
 This project is **open-source**. Feel free to modify and distribute it!  
 
 ---
 
 ### 👤 **Author**  
-💻 **Developed by [ju4700 (Jalal Uddin)](https://github.com/ju4700)**   🔥 **Happy Coding in Bangla!** 🇧🇩✨  
+💻 **Developed by [ju4700 (Jalal Uddin)](https://github.com/ju4700)**  
