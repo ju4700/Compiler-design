@@ -1,4 +1,4 @@
-CMakeFiles/bangla_compiler.dir/src/semantic.cpp.o: \
+CMakeFiles/bcl.dir/src/semantic.cpp.o: \
  /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/src/semantic.cpp \
  /usr/include/stdc-predef.h \
  /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/src/semantic.h \

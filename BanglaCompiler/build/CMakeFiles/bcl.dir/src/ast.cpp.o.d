@@ -1,4 +1,4 @@
-CMakeFiles/bangla_compiler.dir/src/ast.cpp.o: \
+CMakeFiles/bcl.dir/src/ast.cpp.o: \
  /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/src/ast.cpp \
  /usr/include/stdc-predef.h \
  /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/src/ast.h \

@@ -19,7 +19,7 @@ set_source_files_properties(${FLEX_Lexer_OUTPUTS} ${CMAKE_CURRENT_BINARY_DIR}/pa
 # Add src/ to include path
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
-add_executable(bangla_compiler
+add_executable(bcl
     ${FLEX_Lexer_OUTPUTS}  # lex.yy.c
     ${CMAKE_CURRENT_BINARY_DIR}/parser.tab.c  # parser.tab.c
     src/ast.cpp
@@ -28,4 +28,4 @@ add_executable(bangla_compiler
     src/main.cpp
 )
 
-target_link_libraries(bangla_compiler ${llvm_libs} fl)
+target_link_libraries(bcl ${llvm_libs} fl)

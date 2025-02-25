@@ -1,4 +1,4 @@
-CMakeFiles/bangla_compiler.dir/src/codegen.cpp.o: \
+CMakeFiles/bcl.dir/src/codegen.cpp.o: \
  /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/src/codegen.cpp \
  /usr/include/stdc-predef.h \
  /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/src/codegen.h \

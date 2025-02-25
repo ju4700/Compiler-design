@@ -4,6 +4,6 @@
 /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/CMakeFiles/ARMTargetParserTableGen.dir
 /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/CMakeFiles/AArch64TargetParserTableGen.dir
 /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/CMakeFiles/RISCVTargetParserTableGen.dir
-/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/CMakeFiles/bangla_compiler.dir
+/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/CMakeFiles/bcl.dir
 /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/CMakeFiles/edit_cache.dir
 /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/CMakeFiles/rebuild_cache.dir

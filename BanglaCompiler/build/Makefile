@@ -195,24 +195,24 @@ RISCVTargetParserTableGen/fast:
 .PHONY : RISCVTargetParserTableGen/fast
 
 #=============================================================================
-# Target rules for targets named bangla_compiler
+# Target rules for targets named bcl
 
 # Build rule for target.
-bangla_compiler: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 bangla_compiler
-.PHONY : bangla_compiler
+bcl: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 bcl
+.PHONY : bcl
 
 # fast build rule for target.
-bangla_compiler/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/build
-.PHONY : bangla_compiler/fast
+bcl/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/build
+.PHONY : bcl/fast
 
 lex.yy.o: lex.yy.c.o
 .PHONY : lex.yy.o
 
 # target to build an object file
 lex.yy.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/lex.yy.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/lex.yy.c.o
 .PHONY : lex.yy.c.o
 
 lex.yy.i: lex.yy.c.i
@@ -220,7 +220,7 @@ lex.yy.i: lex.yy.c.i
 
 # target to preprocess a source file
 lex.yy.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/lex.yy.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/lex.yy.c.i
 .PHONY : lex.yy.c.i
 
 lex.yy.s: lex.yy.c.s
@@ -228,7 +228,7 @@ lex.yy.s: lex.yy.c.s
 
 # target to generate assembly for a file
 lex.yy.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/lex.yy.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/lex.yy.c.s
 .PHONY : lex.yy.c.s
 
 parser.tab.o: parser.tab.c.o
@@ -236,7 +236,7 @@ parser.tab.o: parser.tab.c.o
 
 # target to build an object file
 parser.tab.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/parser.tab.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/parser.tab.c.o
 .PHONY : parser.tab.c.o
 
 parser.tab.i: parser.tab.c.i
@@ -244,7 +244,7 @@ parser.tab.i: parser.tab.c.i
 
 # target to preprocess a source file
 parser.tab.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/parser.tab.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/parser.tab.c.i
 .PHONY : parser.tab.c.i
 
 parser.tab.s: parser.tab.c.s
@@ -252,7 +252,7 @@ parser.tab.s: parser.tab.c.s
 
 # target to generate assembly for a file
 parser.tab.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/parser.tab.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/parser.tab.c.s
 .PHONY : parser.tab.c.s
 
 src/ast.o: src/ast.cpp.o
@@ -260,7 +260,7 @@ src/ast.o: src/ast.cpp.o
 
 # target to build an object file
 src/ast.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/ast.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/ast.cpp.o
 .PHONY : src/ast.cpp.o
 
 src/ast.i: src/ast.cpp.i
@@ -268,7 +268,7 @@ src/ast.i: src/ast.cpp.i
 
 # target to preprocess a source file
 src/ast.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/ast.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/ast.cpp.i
 .PHONY : src/ast.cpp.i
 
 src/ast.s: src/ast.cpp.s
@@ -276,7 +276,7 @@ src/ast.s: src/ast.cpp.s
 
 # target to generate assembly for a file
 src/ast.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/ast.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/ast.cpp.s
 .PHONY : src/ast.cpp.s
 
 src/codegen.o: src/codegen.cpp.o
@@ -284,7 +284,7 @@ src/codegen.o: src/codegen.cpp.o
 
 # target to build an object file
 src/codegen.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/codegen.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/codegen.cpp.o
 .PHONY : src/codegen.cpp.o
 
 src/codegen.i: src/codegen.cpp.i
@@ -292,7 +292,7 @@ src/codegen.i: src/codegen.cpp.i
 
 # target to preprocess a source file
 src/codegen.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/codegen.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/codegen.cpp.i
 .PHONY : src/codegen.cpp.i
 
 src/codegen.s: src/codegen.cpp.s
@@ -300,7 +300,7 @@ src/codegen.s: src/codegen.cpp.s
 
 # target to generate assembly for a file
 src/codegen.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/codegen.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/codegen.cpp.s
 .PHONY : src/codegen.cpp.s
 
 src/main.o: src/main.cpp.o
@@ -308,7 +308,7 @@ src/main.o: src/main.cpp.o
 
 # target to build an object file
 src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -316,7 +316,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -324,7 +324,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 src/semantic.o: src/semantic.cpp.o
@@ -332,7 +332,7 @@ src/semantic.o: src/semantic.cpp.o
 
 # target to build an object file
 src/semantic.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/semantic.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/semantic.cpp.o
 .PHONY : src/semantic.cpp.o
 
 src/semantic.i: src/semantic.cpp.i
@@ -340,7 +340,7 @@ src/semantic.i: src/semantic.cpp.i
 
 # target to preprocess a source file
 src/semantic.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/semantic.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/semantic.cpp.i
 .PHONY : src/semantic.cpp.i
 
 src/semantic.s: src/semantic.cpp.s
@@ -348,7 +348,7 @@ src/semantic.s: src/semantic.cpp.s
 
 # target to generate assembly for a file
 src/semantic.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/src/semantic.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bcl.dir/build.make CMakeFiles/bcl.dir/src/semantic.cpp.s
 .PHONY : src/semantic.cpp.s
 
 # Help Target
@@ -365,7 +365,7 @@ help:
 	@echo "... acc_gen"
 	@echo "... intrinsics_gen"
 	@echo "... omp_gen"
-	@echo "... bangla_compiler"
+	@echo "... bcl"
 	@echo "... lex.yy.o"
 	@echo "... lex.yy.i"
 	@echo "... lex.yy.s"

@@ -1,2 +1,2 @@
-# Empty dependencies file for bangla_compiler.
+# Empty dependencies file for bcl.
 # This may be replaced when dependencies are built.

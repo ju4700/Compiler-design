@@ -153,5 +153,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/ARMTargetParserTableGen.dir/DependInfo.cmake"
   "CMakeFiles/AArch64TargetParserTableGen.dir/DependInfo.cmake"
   "CMakeFiles/RISCVTargetParserTableGen.dir/DependInfo.cmake"
-  "CMakeFiles/bangla_compiler.dir/DependInfo.cmake"
+  "CMakeFiles/bcl.dir/DependInfo.cmake"
   )

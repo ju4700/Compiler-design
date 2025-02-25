@@ -1,4 +1,4 @@
-CMakeFiles/bangla_compiler.dir/lex.yy.c.o: \
+CMakeFiles/bcl.dir/lex.yy.c.o: \
  /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/lex.yy.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \

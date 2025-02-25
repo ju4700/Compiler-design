@@ -1,4 +1,4 @@
-CMakeFiles/bangla_compiler.dir/parser.tab.c.o: \
+CMakeFiles/bcl.dir/parser.tab.c.o: \
  /home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c \
  /usr/include/stdc-predef.h /usr/include/c++/14/iostream \
  /usr/include/c++/14/bits/requires_hosted.h \
