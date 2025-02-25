@@ -1,7 +1,3 @@
-Here’s the **final `README.md`** with your name included. 🚀  
-
----
-
 # **📢 Bangla Programming Language Compiler (BPL)**  
 🚀 **BPL** (Bangla Programming Language) is a **custom programming language** where **keywords, variable names, and syntax** are written in **Bangla**. This compiler, built with **C++ (Flex & Bison)**, converts Bangla source code into an **executable file**.  
 
