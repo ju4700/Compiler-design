@@ -3,8 +3,12 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
+#include <llvm/Support/Casting.h>  // For dyn_cast
 #include <map>
 #include "ast.h"
+
+// Declaration only
+std::string int_to_bangla(int value);
 
 class CodeGenerator {
     llvm::LLVMContext context;
@@ -60,10 +64,17 @@ public:
         } else if (auto* print = dynamic_cast<PrintNode*>(node)) {
             llvm::Value* val = generate(print->expr);
             auto printf = module->getFunction("printf");
-            if (dynamic_cast<StringNode*>(print->expr)) {
+            if (auto* strNode = dynamic_cast<StringNode*>(print->expr)) {
                 builder.CreateCall(printf, {val});
+            } else if (auto* intVal = llvm::dyn_cast<llvm::ConstantInt>(val)) {
+                // Convert integer to Bangla string
+                std::string banglaStr = int_to_bangla(intVal->getSExtValue());
+                auto banglaPtr = builder.CreateGlobalStringPtr(banglaStr);
+                builder.CreateCall(printf, {banglaPtr});
             } else {
-                builder.CreateCall(printf, {builder.CreateGlobalStringPtr("%d\n"), val});
+                // Fallback for other types (e.g., variables holding integers)
+                auto formatStr = builder.CreateGlobalStringPtr("%d\n");
+                builder.CreateCall(printf, {formatStr, val});
             }
             return val;
         } else if (auto* binOp = dynamic_cast<BinaryOpNode*>(node)) {
@@ -132,7 +143,7 @@ public:
 
             generate(func->body);
             currentFunc = prevFunc;
-            builder.SetInsertPoint(&currentFunc->back()); // Fixed line
+            builder.SetInsertPoint(&currentFunc->back());  // Fixed: Correct token and pointer
             return funcDecl;
         } else if (auto* ret = dynamic_cast<ReturnNode*>(node)) {
             auto val = generate(ret->value);
