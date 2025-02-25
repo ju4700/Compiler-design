@@ -6,7 +6,7 @@ A compiler for Bangla-script programs.
 2. Build: `mkdir build && cd build && cmake .. && make`
 
 ## Usage
-Compile: `./bangla_compiler test/basic.bgl`
+Compile: `./bcl test/basic.bgl`
 Run: `./program`
 
 ## Syntax
