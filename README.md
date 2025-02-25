@@ -1,155 +1,177 @@
-# Bangla Programming Language (BPL) Compiler 
-> **A modern programming language with native Bangla syntax.**
+# Bangla Compiler
 
-**BPL (Bangla Programming Language)** is a custom compiler where **keywords, variables, and syntax** are written in **Bangla**. Built with **C++ (Flex, Bison, and LLVM)**, this compiler allows Bangla-speaking developers to write and execute code in their native language.
+A simple compiler for a Bangla-scripted programming language, built with Flex, Bison, and LLVM. This project translates Bangla source code into executable binaries and supports basic constructs like variables, conditionals, and output in Bangla numerals (e.g., ১০ instead of 10).
 
-## ✨ Features
-- **Bangla-based syntax** (variables, functions, conditionals, loops)
-- **Lexical & syntax analysis** using Flex & Bison
-- **Semantic analysis & type checking**
-- **Code generation via LLVM IR**
-- **Cross-platform support** (Windows & Linux)
-- **Unicode support for Bangla identifiers**
+## Overview
 
-## 🚀 Installation (Windows & Linux)
+The Bangla Compiler (`bcl`) allows users to write programs in Bangla script, leveraging a custom grammar and LLVM-based code generation. It supports integer variables, if-else statements, and printing values, with output formatted in Bangla digits. This project serves as a proof-of-concept for localized programming languages and as an educational tool for compiler design.
 
-### 🔹 Windows (Using MSYS2 & Clang)
-#### **Step 1: Install Required Tools**
-1. Download and install **MSYS2** from [msys2.org](https://www.msys2.org/).
-2. Open **MSYS2 MinGW 64-bit terminal** and install dependencies:
-   ```sh
-   pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-clang flex bison make git
+## Features
+
+- **Bangla Script Support:** Write code using Bangla keywords (e.g., `সংখ্যা` for integer, `যদি` for if, `দেখাও` for print).
+- **Integer Operations:** Basic arithmetic and comparisons (e.g., `+`, `>`, `=`).
+- **Conditionals:** Support for if and if-else statements with Bangla syntax (`যদি`, `নাহলে`).
+- **Bangla Output:** Outputs integers in Bangla numerals (e.g., `১০` for 10).
+- **LLVM Backend:** Generates executable binaries via LLVM IR.
+
+## Installation
+
+### Prerequisites
+
+- CMake (>= 3.10)
+- GCC/G++ or Clang (C++17 support)
+- Flex (>= 2.6.4)
+- Bison (>= 3.8.2)
+- LLVM (with development libraries, e.g., `libllvm-dev` on Ubuntu)
+
+### Build Instructions
+
+1. **Clone the Repository:**
+
+   ```bash
+   git clone https://github.com/yourusername/BanglaCompiler.git
+   cd BanglaCompiler
    ```
-3. Clone the repository:
-   ```sh
-   git clone https://github.com/ju4700/bangla-compiler.git
-   cd bangla-compiler
+
+2. **Create Build Directory:**
+
+   ```bash
+   mkdir build
+   cd build
    ```
-4. Build the compiler:
-   ```sh
+
+3. **Run CMake:**
+
+   ```bash
+   cmake .. -Wno-dev
+   ```
+
+4. **Build the Compiler:**
+
+   ```bash
    make
    ```
-5. Run a Bangla script:
-   ```sh
-   ./bcl examples/sample.bgl
+
+5. **Verify Installation:**
+
+   The executable `bcl` should be in the build directory:
+
+   ```bash
+   ls -l bcl
    ```
 
-### 🔹 Linux (Ubuntu/Debian-based Distros)
-#### **Step 1: Install Required Dependencies**
-```sh
-sudo apt update
-sudo apt install build-essential flex bison clang llvm cmake git
-```
-#### **Step 2: Clone and Build the Compiler**
-```sh
-git clone https://github.com/ju4700/bangla-compiler.git
-cd bangla-compiler
-make
-```
-#### **Step 3: Run a Bangla Script**
-```sh
-./bcl examples/sample.bgl
-```
+## Usage
 
-## 📝 Language Syntax
-### **Variable Declaration**
+### Writing Bangla Code
+
+Create a `.bgl` file with Bangla script. Example (`basic.bgl`):
+
 ```plaintext
 সংখ্যা ক = ১০;
-দশমিক পি = ৩.১৪;
-স্ট্রিং বার্তা = "হ্যালো বিশ্ব";
-বুলিয়ান সত্যতা = সত্য;
-```
-### **Conditional Statements**
-```plaintext
 যদি (ক > ৫) {
-    দেখাও("ক বড় সংখ্যা");
-} নাহলে {
-    দেখাও("ক ছোট সংখ্যা");
-}
-```
-### **Looping Constructs**
-```plaintext
-সংখ্যা ক = ১;
-যতক্ষণ (ক <= ৫) {
     দেখাও(ক);
-    ক = ক + ১;
+} নাহলে {
+    দেখাও(৫);
 }
 ```
-### **Function Definitions**
-```plaintext
-ফাংশন যোগ(সংখ্যা ক, সংখ্যা খ) {
-    ফিরিয়ে দাও (ক + খ);
-}
 
-সংখ্যা ফলাফল = যোগ(৫, ১০);
-দেখাও(ফলাফল);
+### Compiling and Running
+
+1. **Compile the Code:**
+
+   ```bash
+   ./bcl ../test/basic.bgl
+   ```
+
+   Outputs diagnostic messages and generates the program.
+
+2. **Run the Program:**
+
+   ```bash
+   ./program
+   ```
+
+   **Expected output:** ১০ (Bangla digits for 10).
+
+### Example Output
+
+For `basic.bgl`:
+
+```bash
+./bcl ../test/basic.bgl
+NUMBER
+IDENTIFIER ক
+ASSIGN
+INTEGER 10
+SEMICOLON
+IF
+LPAREN
+IDENTIFIER ক
+GT
+INTEGER 5
+RPAREN
+LBRACE
+PRINT
+LPAREN
+IDENTIFIER ক
+RPAREN
+SEMICOLON
+RBRACE
+ELSE
+LBRACE
+PRINT
+LPAREN
+INTEGER 5
+RPAREN
+SEMICOLON
+RBRACE
+Semantic analysis passed
+Compilation complete. Run ./program
 ```
-### **User Input/Output**
-```plaintext
-সংখ্যা বয়স = ইনপুট();
-দেখাও("আপনার বয়স: " + বয়স);
-```
 
-## ⚙️ Compilation Workflow
-1. **Lexical Analysis** → Converts code into tokens.
-2. **Parsing** → Builds an **Abstract Syntax Tree (AST)**.
-3. **Semantic Analysis** → Type checking & scope validation.
-4. **Intermediate Representation (LLVM IR)** → Optimized code generation.
-5. **Machine Code Generation** → Produces executable binaries.
-
-### **Running the Compiler**
-```sh
-./bcl source.bgl
+```bash
 ./program
+১০
 ```
 
-## 📂 Project Architecture
+## Project Structure
+
+- `src/`: Source files
+  - `lexer.l`: Lexical analyzer (Flex)
+  - `parser.y`: Syntax parser (Bison)
+  - `ast.h`, `ast.cpp`: Abstract Syntax Tree
+  - `semantic.h`, `semantic.cpp`: Semantic analysis
+  - `codegen.h`, `codegen.cpp`: Code generation (LLVM)
+  - `main.cpp`: Entry point
+- `build/`: Build directory (generated)
+- `test/`: Test files (e.g., `basic.bgl`)
+- `CMakeLists.txt`: Build configuration
+
+## Limitations
+
+- **Static Integer Output:** Currently, integer variables are statically converted to Bangla digits (e.g., `১০` for 10). Dynamic runtime conversion is planned.
+- **Basic Features:** Supports only integers, simple conditionals, and printing. Future enhancements include loops, functions, and more data types.
+
+## Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository.
+2. Create a branch (`git checkout -b feature/your-feature`).
+3. Commit changes (`git commit -m "Add your feature"`).
+4. Push to your fork (`git push origin feature/your-feature`).
+5. Open a Pull Request.
+
+## Development Notes
+
+- Use `bison -v` to debug grammar conflicts (`parser.output`).
+- Ensure LLVM compatibility with your system’s version.
+
+## License
+
+This project is licensed under the MIT License. See LICENSE for details.
+
+## Acknowledgments
+
+Built with inspiration from compiler design tutorials and the xAI community. Thanks to Flex, Bison, and LLVM developers for their amazing tools.
 ```
-BanglaCompiler/
-│── src/
-│   ├── lexer.cpp          # Tokenization using Flex
-│   ├── parser.cpp         # Syntax parsing using Bison
-│   ├── ast.cpp            # Abstract Syntax Tree (AST) construction
-│   ├── semantic.cpp       # Type checking & scope management
-│   ├── codegen.cpp        # LLVM IR generation
-│   ├── main.cpp           # Compiler driver & CLI interface
-│── include/
-│   ├── lexer.h
-│   ├── parser.h
-│   ├── ast.h
-│   ├── semantic.h
-│   ├── codegen.h
-│── examples/              # Sample Bangla scripts
-│── test/                  # Unit tests for compiler features
-│── docs/                  # Documentation & language specification
-│── Makefile               # Build automation script
-│── README.md              # Project documentation
-```
-
-## 🔧 Contribution Guidelines
-1. **Fork the repository** 📌
-2. **Create a feature branch** (`git checkout -b feature-branch`) 🌿
-3. **Commit your changes** (`git commit -m "Added new feature"`) ✅
-4. **Push to GitHub** (`git push origin feature-branch`) 🚀
-5. **Submit a pull request** for review 🔍
-
-### **Coding Standards**
-✅ Follow **consistent naming conventions**  
-✅ Ensure **Unicode compatibility** for Bangla syntax  
-✅ Write **unit tests** for new features  
-✅ Maintain **detailed documentation** for changes  
-
-## 🌍 Roadmap & Future Enhancements
-✅ **Phase 1**: Core Syntax & Compiler Architecture  
-✅ **Phase 2**: AST Optimization & Type Checking  
-✅ **Phase 3**: LLVM Backend for Efficient Code Generation  
-🔜 **Phase 4**: Object-Oriented Programming (OOP) Support  
-🔜 **Phase 5**: File Handling, Arrays, and Advanced Data Structures  
-🔜 **Phase 6**: Cross-Platform Compilation (WebAssembly, JVM)  
-🔜 **Phase 7**: IDE Integration & Debugging Support  
-
-## 📚 License
-**MIT License** - Open-source project, feel free to modify and contribute!
-
-## 👤 Author
-Developed by [ju4700 (Jalal Uddin)](https://github.com/ju4700)  
