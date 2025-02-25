@@ -31,7 +31,7 @@
    ```
 5. Run a Bangla script:
    ```sh
-   ./bpl examples/sample.bgl
+   ./bcl examples/sample.bgl
    ```
 
 ### 🔹 Linux (Ubuntu/Debian-based Distros)
@@ -48,7 +48,7 @@ make
 ```
 #### **Step 3: Run a Bangla Script**
 ```sh
-./bpl examples/sample.bgl
+./bcl examples/sample.bgl
 ```
 
 ## 📝 Language Syntax
@@ -99,8 +99,8 @@ make
 
 ### **Running the Compiler**
 ```sh
-./bpl source.bgl
-./output
+./bcl source.bgl
+./program
 ```
 
 ## 📂 Project Architecture
