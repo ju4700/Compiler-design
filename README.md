@@ -173,6 +173,4 @@ This project is **open-source**. Feel free to modify and distribute it!
 ---
 
 ### 👤 **Author**  
-💻 **Developed by [ju4700 (Jalal Uddin)](https://github.com/ju4700)**  
-
-🔥 **Happy Coding in Bangla!** 🇧🇩✨  
+💻 **Developed by [ju4700 (Jalal Uddin)](https://github.com/ju4700)**   🔥 **Happy Coding in Bangla!** 🇧🇩✨  
