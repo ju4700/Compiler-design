@@ -1,7 +1,9 @@
+#include <iostream>
 #include "ast.h"
 #include "semantic.h"
 #include "codegen.h"
 extern "C" int yyparse();
+extern "C" int yylex();  // Added for consistency
 extern FILE* yyin;
 extern ASTNode* root;
 

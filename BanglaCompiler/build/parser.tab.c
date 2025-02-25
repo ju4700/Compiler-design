@@ -70,13 +70,14 @@
 #line 5 "src/parser.y"
 
 #include <iostream>
-#include <stdbool.h>  // For bool in C
-#include "ast.h"      // Still needed in parser.tab.c
-extern int yylex();
+#include <stdbool.h>
+#include "ast.h"
+extern "C" int yylex();   // Ensure C linkage
+extern "C" int yyparse(); // Ensure C linkage for consistency
 void yyerror(const char* s) { std::cerr << "Parse Error: " << s << std::endl; }
 extern ASTNode* root;
 
-#line 80 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 81 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -540,11 +541,11 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    40,    40,    43,    44,    47,    48,    49,    50,    51,
-      52,    53,    54,    55,    56,    57,    60,    61,    62,    63,
-      64,    65,    66,    67,    68,    69,    70,    71,    72,    73,
-      74,    75,    76,    79,    82,    83,    86,    89,    90,    91,
-      94,    95,    96
+       0,    41,    41,    44,    45,    48,    49,    50,    51,    52,
+      53,    54,    55,    56,    57,    58,    61,    62,    63,    64,
+      65,    66,    67,    68,    69,    70,    71,    72,    73,    74,
+      75,    76,    77,    80,    83,    84,    87,    90,    91,    92,
+      95,    96,    97
 };
 #endif
 
@@ -1178,253 +1179,253 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: stmts  */
-#line 40 "src/parser.y"
+#line 41 "src/parser.y"
                { root = (yyvsp[0].node); }
-#line 1184 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1185 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 3: /* stmts: stmt SEMICOLON stmts  */
-#line 43 "src/parser.y"
+#line 44 "src/parser.y"
                             { (yyval.node) = new BlockNode((yyvsp[-2].node), (yyvsp[0].node)); }
-#line 1190 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1191 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 4: /* stmts: stmt SEMICOLON  */
-#line 44 "src/parser.y"
+#line 45 "src/parser.y"
                             { (yyval.node) = (yyvsp[-1].node); }
-#line 1196 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1197 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 5: /* stmt: NUMBER IDENTIFIER ASSIGN expr  */
-#line 47 "src/parser.y"
+#line 48 "src/parser.y"
                                     { (yyval.node) = new AssignNode((yyvsp[-2].sval), "int", (yyvsp[0].node)); }
-#line 1202 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1203 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 6: /* stmt: FLOAT IDENTIFIER ASSIGN expr  */
-#line 48 "src/parser.y"
+#line 49 "src/parser.y"
                                     { (yyval.node) = new AssignNode((yyvsp[-2].sval), "float", (yyvsp[0].node)); }
-#line 1208 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1209 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 7: /* stmt: STRING IDENTIFIER ASSIGN expr  */
-#line 49 "src/parser.y"
+#line 50 "src/parser.y"
                                     { (yyval.node) = new AssignNode((yyvsp[-2].sval), "string", (yyvsp[0].node)); }
-#line 1214 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1215 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 8: /* stmt: BOOL IDENTIFIER ASSIGN expr  */
-#line 50 "src/parser.y"
+#line 51 "src/parser.y"
                                     { (yyval.node) = new AssignNode((yyvsp[-2].sval), "bool", (yyvsp[0].node)); }
-#line 1220 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1221 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 9: /* stmt: NUMBER LBRACKET RBRACKET IDENTIFIER ASSIGN array  */
-#line 51 "src/parser.y"
+#line 52 "src/parser.y"
                                                        { (yyval.node) = new ArrayAssignNode((yyvsp[-2].sval), (yyvsp[0].node)); }
-#line 1226 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1227 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 10: /* stmt: PRINT LPAREN expr RPAREN  */
-#line 52 "src/parser.y"
+#line 53 "src/parser.y"
                                     { (yyval.node) = new PrintNode((yyvsp[-1].node)); }
-#line 1232 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1233 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 11: /* stmt: IF LPAREN expr RPAREN LBRACE stmts RBRACE  */
-#line 53 "src/parser.y"
+#line 54 "src/parser.y"
                                                 { (yyval.node) = new IfNode((yyvsp[-4].node), (yyvsp[-1].node), nullptr); }
-#line 1238 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1239 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 12: /* stmt: IF LPAREN expr RPAREN LBRACE stmts RBRACE ELSE LBRACE stmts RBRACE  */
-#line 54 "src/parser.y"
+#line 55 "src/parser.y"
                                                                          { (yyval.node) = new IfNode((yyvsp[-8].node), (yyvsp[-5].node), (yyvsp[-1].node)); }
-#line 1244 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1245 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 13: /* stmt: WHILE LPAREN expr RPAREN LBRACE stmts RBRACE  */
-#line 55 "src/parser.y"
+#line 56 "src/parser.y"
                                                    { (yyval.node) = new WhileNode((yyvsp[-4].node), (yyvsp[-1].node)); }
-#line 1250 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1251 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 14: /* stmt: func_def  */
-#line 56 "src/parser.y"
+#line 57 "src/parser.y"
                { (yyval.node) = (yyvsp[0].node); }
-#line 1256 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1257 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 15: /* stmt: RETURN expr  */
-#line 57 "src/parser.y"
+#line 58 "src/parser.y"
                   { (yyval.node) = new ReturnNode((yyvsp[0].node)); }
-#line 1262 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1263 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 16: /* expr: INTEGER  */
-#line 60 "src/parser.y"
+#line 61 "src/parser.y"
                     { (yyval.node) = new IntNode((yyvsp[0].ival)); }
-#line 1268 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1269 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 17: /* expr: FLOATVAL  */
-#line 61 "src/parser.y"
+#line 62 "src/parser.y"
                     { (yyval.node) = new FloatNode((yyvsp[0].fval)); }
-#line 1274 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1275 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 18: /* expr: STRINGVAL  */
-#line 62 "src/parser.y"
+#line 63 "src/parser.y"
                     { (yyval.node) = new StringNode((yyvsp[0].sval)); }
-#line 1280 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1281 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 19: /* expr: TRUE  */
-#line 63 "src/parser.y"
+#line 64 "src/parser.y"
                     { (yyval.node) = new BoolNode((yyvsp[0].bval)); }
-#line 1286 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1287 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 20: /* expr: FALSE  */
-#line 64 "src/parser.y"
+#line 65 "src/parser.y"
                     { (yyval.node) = new BoolNode((yyvsp[0].bval)); }
-#line 1292 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1293 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 21: /* expr: IDENTIFIER  */
-#line 65 "src/parser.y"
+#line 66 "src/parser.y"
                     { (yyval.node) = new VarNode((yyvsp[0].sval)); }
-#line 1298 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1299 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 22: /* expr: IDENTIFIER LPAREN call_args RPAREN  */
-#line 66 "src/parser.y"
+#line 67 "src/parser.y"
                                          { (yyval.node) = new CallNode((yyvsp[-3].sval), (yyvsp[-1].node)); }
-#line 1304 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1305 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 23: /* expr: expr PLUS expr  */
-#line 67 "src/parser.y"
+#line 68 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "+", (yyvsp[0].node)); }
-#line 1310 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1311 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 24: /* expr: expr MINUS expr  */
-#line 68 "src/parser.y"
+#line 69 "src/parser.y"
                       { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "-", (yyvsp[0].node)); }
-#line 1316 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1317 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 25: /* expr: expr MUL expr  */
-#line 69 "src/parser.y"
+#line 70 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "*", (yyvsp[0].node)); }
-#line 1322 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1323 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 26: /* expr: expr DIV expr  */
-#line 70 "src/parser.y"
+#line 71 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "/", (yyvsp[0].node)); }
-#line 1328 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1329 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 27: /* expr: expr GT expr  */
-#line 71 "src/parser.y"
+#line 72 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), ">", (yyvsp[0].node)); }
-#line 1334 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1335 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 28: /* expr: expr LT expr  */
-#line 72 "src/parser.y"
+#line 73 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "<", (yyvsp[0].node)); }
-#line 1340 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1341 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 29: /* expr: expr EQ expr  */
-#line 73 "src/parser.y"
+#line 74 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "==", (yyvsp[0].node)); }
-#line 1346 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1347 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 30: /* expr: expr AND expr  */
-#line 74 "src/parser.y"
+#line 75 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "&&", (yyvsp[0].node)); }
-#line 1352 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1353 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 31: /* expr: expr OR expr  */
-#line 75 "src/parser.y"
+#line 76 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "||", (yyvsp[0].node)); }
-#line 1358 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1359 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 32: /* expr: LPAREN expr RPAREN  */
-#line 76 "src/parser.y"
+#line 77 "src/parser.y"
                          { (yyval.node) = (yyvsp[-1].node); }
-#line 1364 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1365 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 33: /* array: LBRACKET expr_list RBRACKET  */
-#line 79 "src/parser.y"
+#line 80 "src/parser.y"
                                    { (yyval.node) = (yyvsp[-1].node); }
-#line 1370 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1371 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 34: /* expr_list: expr  */
-#line 82 "src/parser.y"
+#line 83 "src/parser.y"
                 { (yyval.node) = new ExprListNode((yyvsp[0].node)); }
-#line 1376 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1377 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 35: /* expr_list: expr COMMA expr_list  */
-#line 83 "src/parser.y"
+#line 84 "src/parser.y"
                                 { (yyval.node) = new ExprListNode((yyvsp[-2].node), (yyvsp[0].node)); }
-#line 1382 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1383 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 36: /* func_def: FUNCTION IDENTIFIER LPAREN param_list RPAREN LBRACE stmts RBRACE  */
-#line 86 "src/parser.y"
+#line 87 "src/parser.y"
                                                                            { (yyval.node) = new FunctionNode((yyvsp[-6].sval), (yyvsp[-4].node), (yyvsp[-1].node)); }
-#line 1388 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1389 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 37: /* param_list: %empty  */
-#line 89 "src/parser.y"
+#line 90 "src/parser.y"
                         { (yyval.node) = nullptr; }
-#line 1394 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1395 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 38: /* param_list: NUMBER IDENTIFIER  */
-#line 90 "src/parser.y"
+#line 91 "src/parser.y"
                               { (yyval.node) = new ParamNode((yyvsp[0].sval), "int"); }
-#line 1400 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1401 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 39: /* param_list: NUMBER IDENTIFIER COMMA param_list  */
-#line 91 "src/parser.y"
+#line 92 "src/parser.y"
                                                { (yyval.node) = new ParamNode((yyvsp[-2].sval), "int", (yyvsp[0].node)); }
-#line 1406 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1407 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 40: /* call_args: %empty  */
-#line 94 "src/parser.y"
+#line 95 "src/parser.y"
                        { (yyval.node) = nullptr; }
-#line 1412 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1413 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 41: /* call_args: expr  */
-#line 95 "src/parser.y"
+#line 96 "src/parser.y"
                 { (yyval.node) = new ExprListNode((yyvsp[0].node)); }
-#line 1418 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1419 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
   case 42: /* call_args: expr COMMA call_args  */
-#line 96 "src/parser.y"
+#line 97 "src/parser.y"
                                 { (yyval.node) = new ExprListNode((yyvsp[-2].node), (yyvsp[0].node)); }
-#line 1424 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1425 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
 
-#line 1428 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1429 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
 
       default: break;
     }
@@ -1617,4 +1618,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 98 "src/parser.y"
+#line 99 "src/parser.y"
+
+
+/* No main() here */

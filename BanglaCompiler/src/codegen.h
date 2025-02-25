@@ -3,6 +3,7 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
+#include <map>
 #include "ast.h"
 
 class CodeGenerator {
@@ -10,16 +11,17 @@ class CodeGenerator {
     llvm::IRBuilder<> builder;
     std::unique_ptr<llvm::Module> module;
     std::map<std::string, llvm::Value*> variables;
-    llvm::Function* mainFunc;
+    std::map<std::string, llvm::Function*> functions;
+    llvm::Function* currentFunc;
 
 public:
     CodeGenerator() : builder(context), module(std::make_unique<llvm::Module>("BanglaModule", context)) {
         auto printfType = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), 
-            {llvm::Type::getInt8PtrTy(context)}, true);
+            {llvm::Type::getInt8Ty(context)->getPointerTo()}, true);
         module->getOrInsertFunction("printf", printfType);
         auto mainType = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), false);
-        mainFunc = llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module.get());
-        auto block = llvm::BasicBlock::Create(context, "entry", mainFunc);
+        currentFunc = llvm::Function::Create(mainType, llvm::Function::ExternalLinkage, "main", module.get());
+        auto block = llvm::BasicBlock::Create(context, "entry", currentFunc);
         builder.SetInsertPoint(block);
     }
 
@@ -38,11 +40,23 @@ public:
             llvm::Value* val = generate(assign->value);
             llvm::Type* type = assign->type == "int" ? llvm::Type::getInt32Ty(context) : 
                               assign->type == "float" ? llvm::Type::getFloatTy(context) : 
-                              llvm::Type::getInt8PtrTy(context);
+                              llvm::Type::getInt8Ty(context)->getPointerTo();
             auto var = builder.CreateAlloca(type, nullptr, assign->var);
             builder.CreateStore(val, var);
             variables[assign->var] = var;
             return val;
+        } else if (auto* array = dynamic_cast<ArrayAssignNode*>(node)) {
+            auto vals = dynamic_cast<ExprListNode*>(array->values);
+            llvm::Type* intTy = llvm::Type::getInt32Ty(context);
+            auto arrayTy = llvm::ArrayType::get(intTy, vals->expressions.size());
+            auto alloc = builder.CreateAlloca(arrayTy, nullptr, array->var);
+            for (size_t i = 0; i < vals->expressions.size(); i++) {
+                auto val = generate(vals->expressions[i]);
+                auto ptr = builder.CreateGEP(arrayTy, alloc, {llvm::ConstantInt::get(intTy, 0), llvm::ConstantInt::get(intTy, i)});
+                builder.CreateStore(val, ptr);
+            }
+            variables[array->var] = alloc;
+            return alloc;
         } else if (auto* print = dynamic_cast<PrintNode*>(node)) {
             llvm::Value* val = generate(print->expr);
             auto printf = module->getFunction("printf");
@@ -59,12 +73,12 @@ public:
             if (binOp->op == "-") return builder.CreateSub(left, right);
             if (binOp->op == "*") return builder.CreateMul(left, right);
             if (binOp->op == ">") return builder.CreateICmpSGT(left, right);
-            return nullptr; // Add more ops
+            return nullptr; // Add more ops later
         } else if (auto* ifNode = dynamic_cast<IfNode*>(node)) {
             auto cond = generate(ifNode->condition);
-            auto thenBB = llvm::BasicBlock::Create(context, "then", mainFunc);
-            auto elseBB = ifNode->elseBranch ? llvm::BasicBlock::Create(context, "else", mainFunc) : nullptr;
-            auto mergeBB = llvm::BasicBlock::Create(context, "merge", mainFunc);
+            auto thenBB = llvm::BasicBlock::Create(context, "then", currentFunc);
+            auto elseBB = ifNode->elseBranch ? llvm::BasicBlock::Create(context, "else", currentFunc) : nullptr;
+            auto mergeBB = llvm::BasicBlock::Create(context, "merge", currentFunc);
 
             builder.CreateCondBr(cond, thenBB, elseBB ? elseBB : mergeBB);
             builder.SetInsertPoint(thenBB);
@@ -78,6 +92,59 @@ public:
             }
             builder.SetInsertPoint(mergeBB);
             return nullptr;
+        } else if (auto* whileNode = dynamic_cast<WhileNode*>(node)) {
+            auto loopBB = llvm::BasicBlock::Create(context, "loop", currentFunc);
+            auto bodyBB = llvm::BasicBlock::Create(context, "body", currentFunc);
+            auto exitBB = llvm::BasicBlock::Create(context, "exit", currentFunc);
+
+            builder.CreateBr(loopBB);
+            builder.SetInsertPoint(loopBB);
+            auto cond = generate(whileNode->condition);
+            builder.CreateCondBr(cond, bodyBB, exitBB);
+
+            builder.SetInsertPoint(bodyBB);
+            generate(whileNode->body);
+            builder.CreateBr(loopBB);
+
+            builder.SetInsertPoint(exitBB);
+            return nullptr;
+        } else if (auto* func = dynamic_cast<FunctionNode*>(node)) {
+            std::vector<llvm::Type*> paramTypes;
+            for (auto p = dynamic_cast<ParamNode*>(func->params); p; p = dynamic_cast<ParamNode*>(p->next)) {
+                paramTypes.push_back(llvm::Type::getInt32Ty(context)); // Int only for now
+            }
+            auto funcType = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), paramTypes, false);
+            auto funcDecl = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, func->name, module.get());
+            functions[func->name] = funcDecl;
+
+            auto prevFunc = currentFunc;
+            currentFunc = funcDecl;
+            auto block = llvm::BasicBlock::Create(context, "entry", currentFunc);
+            builder.SetInsertPoint(block);
+
+            auto argIt = funcDecl->arg_begin();
+            for (auto p = dynamic_cast<ParamNode*>(func->params); p; p = dynamic_cast<ParamNode*>(p->next), ++argIt) {
+                argIt->setName(p->name);
+                auto alloc = builder.CreateAlloca(llvm::Type::getInt32Ty(context), nullptr, p->name);
+                builder.CreateStore(&*argIt, alloc);
+                variables[p->name] = alloc;
+            }
+
+            generate(func->body);
+            currentFunc = prevFunc;
+            builder.SetInsertPoint(&currentFunc->back()); // Fixed line
+            return funcDecl;
+        } else if (auto* ret = dynamic_cast<ReturnNode*>(node)) {
+            auto val = generate(ret->value);
+            builder.CreateRet(val);
+            return val;
+        } else if (auto* call = dynamic_cast<CallNode*>(node)) {
+            auto func = functions[call->name];
+            std::vector<llvm::Value*> args;
+            for (auto a = dynamic_cast<ExprListNode*>(call->args); a; a = dynamic_cast<ExprListNode*>(a->expressions.size() > 1 ? a->expressions[1] : nullptr)) {
+                args.push_back(generate(a->expressions[0]));
+            }
+            return builder.CreateCall(func, args);
         } else if (auto* block = dynamic_cast<BlockNode*>(node)) {
             for (auto* stmt : block->statements) generate(stmt);
             return nullptr;
@@ -85,7 +152,11 @@ public:
         return nullptr;
     }
 
-    void finalize() { builder.CreateRet(llvm::ConstantInt::get(context, llvm::APInt(32, 0))); }
+    void finalize() { 
+        if (currentFunc->empty() || !currentFunc->back().getTerminator()) {
+            builder.CreateRet(llvm::ConstantInt::get(context, llvm::APInt(32, 0)));
+        }
+    }
     void save(const std::string& filename) {
         std::error_code ec;
         llvm::raw_fd_ostream out(filename, ec);

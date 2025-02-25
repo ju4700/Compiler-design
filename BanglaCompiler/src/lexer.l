@@ -1,14 +1,12 @@
 %{
-#include "parser.tab.h"  // Token definitions from Bison
-#include <string>
+#include "parser.tab.h"  // Bison token definitions
+#include <string.h>      // For strdup in C
 
-#define YY_DECL extern "C" int yylex()  // Avoid C++ name mangling
+#define YY_DECL extern "C" int yylex()
 %}
 
-/* No file wrapping needed */
-%option noyywrap  
-/* Support UTF-8 Bangla characters */
-%option 8bit      
+%option noyywrap
+%option 8bit
 
 DIGIT   [০-৯]
 LETTER  [অ-ঔক-য়]
@@ -22,22 +20,23 @@ LETTER  [অ-ঔক-য়]
 "যদি"         { return IF; }
 "নাহলে"       { return ELSE; }
 "যতক্ষণ"      { return WHILE; }
-"জন্য"        { return FOR; }
 "ফাংশন"      { return FUNCTION; }
 "ফিরিয়ে দাও"  { return RETURN; }
 "দেখাও"       { return PRINT; }
-"ইনপুট"       { return INPUT; }
 "সত্য"        { yylval.bval = true; return TRUE; }
 "মিথ্যা"      { yylval.bval = false; return FALSE; }
 {DIGIT}+      { yylval.ival = atoi(yytext); return INTEGER; }
 {DIGIT}+"."{DIGIT}+ { yylval.fval = atof(yytext); return FLOATVAL; }
-"\""[^\"]*"\"" { yylval.sval = strdup(yytext + 1); yylval.sval[strlen(yval.sval) - 1] = 0; return STRINGVAL; }
+"\""[^\"]*"\"" { yylval.sval = strdup(yytext + 1); yylval.sval[strlen(yylval.sval) - 1] = 0; return STRINGVAL; }
 "="           { return ASSIGN; }
 ";"           { return SEMICOLON; }
 "("           { return LPAREN; }
 ")"           { return RPAREN; }
 "{"           { return LBRACE; }
 "}"           { return RBRACE; }
+"["           { return LBRACKET; }
+"]"           { return RBRACKET; }
+","           { return COMMA; }
 ">"           { return GT; }
 "<"           { return LT; }
 "=="          { return EQ; }

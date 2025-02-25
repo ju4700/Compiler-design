@@ -15,6 +15,12 @@ public:
     ASTNode* value; 
     AssignNode(const std::string& v, const std::string& t, ASTNode* val) : var(v), type(t), value(val) {} 
 };
+class ArrayAssignNode : public ASTNode {
+public:
+    std::string var;
+    ASTNode* values;
+    ArrayAssignNode(const std::string& v, ASTNode* vals) : var(v), values(vals) {}
+};
 class PrintNode : public ASTNode { public: ASTNode* expr; PrintNode(ASTNode* e) : expr(e) {} };
 class IfNode : public ASTNode { 
 public: 
@@ -41,6 +47,39 @@ public:
             statements.insert(statements.end(), block->statements.begin(), block->statements.end());
         } else if (next) statements.push_back(next);
     }
+};
+class ExprListNode : public ASTNode {
+public:
+    std::vector<ASTNode*> expressions;
+    ExprListNode(ASTNode* expr, ASTNode* next = nullptr) {
+        expressions.push_back(expr);
+        if (auto list = dynamic_cast<ExprListNode*>(next)) {
+            expressions.insert(expressions.end(), list->expressions.begin(), list->expressions.end());
+        }
+    }
+};
+class FunctionNode : public ASTNode {
+public:
+    std::string name;
+    ASTNode* params, *body;
+    FunctionNode(const std::string& n, ASTNode* p, ASTNode* b) : name(n), params(p), body(b) {}
+};
+class ParamNode : public ASTNode {
+public:
+    std::string name, type;
+    ASTNode* next;
+    ParamNode(const std::string& n, const std::string& t, ASTNode* nxt = nullptr) : name(n), type(t), next(nxt) {}
+};
+class ReturnNode : public ASTNode {
+public:
+    ASTNode* value;
+    ReturnNode(ASTNode* v) : value(v) {}
+};
+class CallNode : public ASTNode {
+public:
+    std::string name;
+    ASTNode* args;
+    CallNode(const std::string& n, ASTNode* a) : name(n), args(a) {}
 };
 
 extern ASTNode* root;

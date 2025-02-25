@@ -47,7 +47,7 @@ extern int yydebug;
 /* "%code requires" blocks.  */
 #line 1 "src/parser.y"
 
-    #include "ast.h"  // Correct include for src/
+    #include "ast.h"
 
 #line 53 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.h"
 
@@ -102,7 +102,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 14 "src/parser.y"
+#line 15 "src/parser.y"
 
     int ival;
     float fval;
