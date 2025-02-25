@@ -8,8 +8,6 @@
 ✅ **Cross-platform support** (Windows & Linux)  
 ✅ **Unicode support for Bangla identifiers**  
 
-💻 **Developed by [ju4700 (Jalal Uddin)](https://github.com/ju4700)**  
-
 ---
 
 ## **Table of Contents**
