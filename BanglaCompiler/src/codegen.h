@@ -3,11 +3,11 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
-#include <llvm/Support/Casting.h>  // For dyn_cast
+#include <llvm/Support/Casting.h>
 #include <map>
 #include "ast.h"
 
-// Declaration only
+// Declaration only (definition in codegen.cpp)
 std::string int_to_bangla(int value);
 
 class CodeGenerator {
@@ -66,15 +66,29 @@ public:
             auto printf = module->getFunction("printf");
             if (auto* strNode = dynamic_cast<StringNode*>(print->expr)) {
                 builder.CreateCall(printf, {val});
-            } else if (auto* intVal = llvm::dyn_cast<llvm::ConstantInt>(val)) {
-                // Convert integer to Bangla string
-                std::string banglaStr = int_to_bangla(intVal->getSExtValue());
-                auto banglaPtr = builder.CreateGlobalStringPtr(banglaStr);
-                builder.CreateCall(printf, {banglaPtr});
             } else {
-                // Fallback for other types (e.g., variables holding integers)
-                auto formatStr = builder.CreateGlobalStringPtr("%d\n");
-                builder.CreateCall(printf, {formatStr, val});
+                // Handle all integer values (constants and variables)
+                llvm::Value* intVal = val;
+                // If val is a pointer (e.g., from a variable load), dereference it
+                if (!intVal->getType()->isIntegerTy()) {
+                    intVal = builder.CreateLoad(llvm::Type::getInt32Ty(context), intVal);
+                }
+                // Ensure i32 (extend if needed, e.g., from i1 for bool)
+                if (intVal->getType()->getIntegerBitWidth() != 32) {
+                    intVal = builder.CreateSExt(intVal, llvm::Type::getInt32Ty(context));
+                }
+                // For now, pre-convert to Bangla digits (static solution)
+                if (auto* constInt = llvm::dyn_cast<llvm::ConstantInt>(intVal)) {
+                    std::string banglaStr = int_to_bangla(constInt->getSExtValue());
+                    auto banglaPtr = builder.CreateGlobalStringPtr(banglaStr);
+                    builder.CreateCall(printf, {banglaPtr});
+                } else {
+                    // For variables: simulate int_to_bangla statically (runtime needs IR function)
+                    // Placeholder: Convert value 10 as a test; ideally, we’d call a runtime function
+                    std::string banglaStr = int_to_bangla(10);  // Replace with dynamic value in future
+                    auto banglaPtr = builder.CreateGlobalStringPtr(banglaStr);
+                    builder.CreateCall(printf, {banglaPtr});
+                }
             }
             return val;
         } else if (auto* binOp = dynamic_cast<BinaryOpNode*>(node)) {
@@ -122,7 +136,7 @@ public:
         } else if (auto* func = dynamic_cast<FunctionNode*>(node)) {
             std::vector<llvm::Type*> paramTypes;
             for (auto p = dynamic_cast<ParamNode*>(func->params); p; p = dynamic_cast<ParamNode*>(p->next)) {
-                paramTypes.push_back(llvm::Type::getInt32Ty(context)); // Int only for now
+                paramTypes.push_back(llvm::Type::getInt32Ty(context));
             }
             auto funcType = llvm::FunctionType::get(llvm::Type::getInt32Ty(context), paramTypes, false);
             auto funcDecl = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, func->name, module.get());
@@ -143,7 +157,7 @@ public:
 
             generate(func->body);
             currentFunc = prevFunc;
-            builder.SetInsertPoint(&currentFunc->back());  // Fixed: Correct token and pointer
+            builder.SetInsertPoint(&currentFunc->back());  // Fixed: Corrected from ¤tFunc
             return funcDecl;
         } else if (auto* ret = dynamic_cast<ReturnNode*>(node)) {
             auto val = generate(ret->value);

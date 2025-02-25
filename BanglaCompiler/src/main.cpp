@@ -1,9 +1,9 @@
-#include <iostream>
 #include "ast.h"
 #include "semantic.h"
 #include "codegen.h"
+#include <iostream>
 extern "C" int yyparse();
-extern "C" int yylex();  // Added for consistency
+extern "C" int yylex();
 extern FILE* yyin;
 extern ASTNode* root;
 
@@ -27,19 +27,18 @@ int main(int argc, char* argv[]) {
     SemanticAnalyzer analyzer;
     try {
         analyzer.analyze(root);
-        std::cout << "Semantic analysis passed\n";
     } catch (const std::exception& e) {
         std::cerr << "Semantic error: " << e.what() << "\n";
         return 1;
     }
+    std::cout << "Semantic analysis passed\n";
 
     CodeGenerator gen;
     gen.generate(root);
     gen.finalize();
     gen.save("output.ll");
 
-    system("clang -S -emit-llvm output.ll -o output.s");
-    system("gcc output.s -o program");
+    system("clang output.ll -o program");  // Compile LLVM IR to executable
     std::cout << "Compilation complete. Run ./program\n";
     return 0;
 }
