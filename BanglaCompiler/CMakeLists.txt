@@ -17,11 +17,11 @@ ADD_FLEX_BISON_DEPENDENCY(Lexer Parser)
 set_source_files_properties(${FLEX_Lexer_OUTPUTS} ${BISON_Parser_OUTPUTS} PROPERTIES LANGUAGE CXX)
 
 # Add src/ to include path
-include_directories(../src)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_executable(bangla_compiler
-    ${FLEX_Lexer_OUTPUTS}
-    ${BISON_Parser_OUTPUTS}
+    ${FLEX_Lexer_OUTPUTS}  # lex.yy.c
+    ${CMAKE_CURRENT_BINARY_DIR}/parser.tab.c  # Only the source file, not the header
     src/ast.cpp
     src/semantic.cpp
     src/codegen.cpp
