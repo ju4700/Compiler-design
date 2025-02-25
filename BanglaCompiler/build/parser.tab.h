@@ -44,6 +44,12 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 1 "src/parser.y"
+
+    #include "ast.h"  // Correct include for src/
+
+#line 53 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -70,21 +76,24 @@ extern int yydebug;
     RPAREN = 271,                  /* RPAREN  */
     LBRACE = 272,                  /* LBRACE  */
     RBRACE = 273,                  /* RBRACE  */
-    GT = 274,                      /* GT  */
-    LT = 275,                      /* LT  */
-    EQ = 276,                      /* EQ  */
-    PLUS = 277,                    /* PLUS  */
-    MINUS = 278,                   /* MINUS  */
-    MUL = 279,                     /* MUL  */
-    DIV = 280,                     /* DIV  */
-    AND = 281,                     /* AND  */
-    OR = 282,                      /* OR  */
-    INTEGER = 283,                 /* INTEGER  */
-    FLOATVAL = 284,                /* FLOATVAL  */
-    TRUE = 285,                    /* TRUE  */
-    FALSE = 286,                   /* FALSE  */
-    STRINGVAL = 287,               /* STRINGVAL  */
-    IDENTIFIER = 288               /* IDENTIFIER  */
+    LBRACKET = 274,                /* LBRACKET  */
+    RBRACKET = 275,                /* RBRACKET  */
+    COMMA = 276,                   /* COMMA  */
+    GT = 277,                      /* GT  */
+    LT = 278,                      /* LT  */
+    EQ = 279,                      /* EQ  */
+    PLUS = 280,                    /* PLUS  */
+    MINUS = 281,                   /* MINUS  */
+    MUL = 282,                     /* MUL  */
+    DIV = 283,                     /* DIV  */
+    AND = 284,                     /* AND  */
+    OR = 285,                      /* OR  */
+    INTEGER = 286,                 /* INTEGER  */
+    FLOATVAL = 287,                /* FLOATVAL  */
+    TRUE = 288,                    /* TRUE  */
+    FALSE = 289,                   /* FALSE  */
+    STRINGVAL = 290,               /* STRINGVAL  */
+    IDENTIFIER = 291               /* IDENTIFIER  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -93,7 +102,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 9 "src/parser.y"
+#line 14 "src/parser.y"
 
     int ival;
     float fval;
@@ -101,7 +110,7 @@ union YYSTYPE
     char* sval;
     ASTNode* node;
 
-#line 105 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.h"
+#line 114 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

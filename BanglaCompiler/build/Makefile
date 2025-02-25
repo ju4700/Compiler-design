@@ -255,6 +255,30 @@ parser.tab.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/parser.tab.c.s
 .PHONY : parser.tab.c.s
 
+parser.tab.o: parser.tab.h.o
+.PHONY : parser.tab.o
+
+# target to build an object file
+parser.tab.h.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/parser.tab.h.o
+.PHONY : parser.tab.h.o
+
+parser.tab.i: parser.tab.h.i
+.PHONY : parser.tab.i
+
+# target to preprocess a source file
+parser.tab.h.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/parser.tab.h.i
+.PHONY : parser.tab.h.i
+
+parser.tab.s: parser.tab.h.s
+.PHONY : parser.tab.s
+
+# target to generate assembly for a file
+parser.tab.h.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/bangla_compiler.dir/build.make CMakeFiles/bangla_compiler.dir/parser.tab.h.s
+.PHONY : parser.tab.h.s
+
 src/ast.o: src/ast.cpp.o
 .PHONY : src/ast.o
 
@@ -369,6 +393,9 @@ help:
 	@echo "... lex.yy.o"
 	@echo "... lex.yy.i"
 	@echo "... lex.yy.s"
+	@echo "... parser.tab.o"
+	@echo "... parser.tab.i"
+	@echo "... parser.tab.s"
 	@echo "... parser.tab.o"
 	@echo "... parser.tab.i"
 	@echo "... parser.tab.s"

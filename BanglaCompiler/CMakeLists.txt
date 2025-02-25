@@ -13,6 +13,12 @@ FLEX_TARGET(Lexer src/lexer.l ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c)
 BISON_TARGET(Parser src/parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.tab.c DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/parser.tab.h)
 ADD_FLEX_BISON_DEPENDENCY(Lexer Parser)
 
+# Ensure generated files are treated as C++
+set_source_files_properties(${FLEX_Lexer_OUTPUTS} ${BISON_Parser_OUTPUTS} PROPERTIES LANGUAGE CXX)
+
+# Add src/ to include path
+include_directories(../src)
+
 add_executable(bangla_compiler
     ${FLEX_Lexer_OUTPUTS}
     ${BISON_Parser_OUTPUTS}
