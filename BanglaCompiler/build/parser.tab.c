@@ -72,12 +72,13 @@
 #include <iostream>
 #include <stdbool.h>
 #include "ast.h"
-extern "C" int yylex();   // Ensure C linkage
-extern "C" int yyparse(); // Ensure C linkage for consistency
-void yyerror(const char* s) { std::cerr << "Parse Error: " << s << std::endl; }
+extern "C" int yylex();
+extern "C" int yyparse();
+extern int yylineno;
+void yyerror(const char* s) { std::cerr << "Parse Error: " << s << " at line " << yylineno << std::endl; }
 extern ASTNode* root;
 
-#line 81 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 82 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -144,8 +145,8 @@ enum yysymbol_kind_t
   YYSYMBOL_IDENTIFIER = 36,                /* IDENTIFIER  */
   YYSYMBOL_YYACCEPT = 37,                  /* $accept  */
   YYSYMBOL_program = 38,                   /* program  */
-  YYSYMBOL_stmts = 39,                     /* stmts  */
-  YYSYMBOL_stmt = 40,                      /* stmt  */
+  YYSYMBOL_stmt = 39,                      /* stmt  */
+  YYSYMBOL_optional_else = 40,             /* optional_else  */
   YYSYMBOL_expr = 41,                      /* expr  */
   YYSYMBOL_array = 42,                     /* array  */
   YYSYMBOL_expr_list = 43,                 /* expr_list  */
@@ -477,18 +478,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  31
+#define YYFINAL  30
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   175
+#define YYLAST   223
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  37
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  10
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  42
+#define YYNRULES  41
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  104
+#define YYNSTATES  109
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   291
@@ -541,11 +542,11 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    41,    41,    44,    45,    48,    49,    50,    51,    52,
-      53,    54,    55,    56,    57,    58,    61,    62,    63,    64,
-      65,    66,    67,    68,    69,    70,    71,    72,    73,    74,
-      75,    76,    77,    80,    83,    84,    87,    90,    91,    92,
-      95,    96,    97
+       0,    42,    42,    45,    46,    47,    48,    49,    50,    51,
+      52,    53,    54,    57,    58,    61,    62,    63,    64,    65,
+      66,    67,    68,    69,    70,    71,    72,    73,    74,    75,
+      76,    77,    80,    83,    84,    87,    90,    91,    92,    95,
+      96,    97
 };
 #endif
 
@@ -566,8 +567,8 @@ static const char *const yytname[] =
   "ASSIGN", "SEMICOLON", "LPAREN", "RPAREN", "LBRACE", "RBRACE",
   "LBRACKET", "RBRACKET", "COMMA", "GT", "LT", "EQ", "PLUS", "MINUS",
   "MUL", "DIV", "AND", "OR", "INTEGER", "FLOATVAL", "TRUE", "FALSE",
-  "STRINGVAL", "IDENTIFIER", "$accept", "program", "stmts", "stmt", "expr",
-  "array", "expr_list", "func_def", "param_list", "call_args", YY_NULLPTR
+  "STRINGVAL", "IDENTIFIER", "$accept", "program", "stmt", "optional_else",
+  "expr", "array", "expr_list", "func_def", "param_list", "call_args", YY_NULLPTR
 };
 
 static const char *
@@ -577,7 +578,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-32)
+#define YYPACT_NINF (-78)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -591,17 +592,17 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     133,   -17,   -23,   -13,   -12,    10,    15,    -5,    17,    18,
-      34,   -32,    30,   -32,    25,    42,    43,    45,    46,    17,
-      17,    54,    17,   -32,   -32,   -32,   -32,   -32,    57,   124,
-      17,   -32,   133,    37,    17,    17,    17,    17,    38,    55,
-      71,    70,    17,    17,    17,    17,    17,    17,    17,    17,
-      17,    17,    85,   -32,    63,   124,   124,   124,   124,    72,
-      73,    51,    75,   -32,    95,    86,   -10,   -10,   141,    -7,
-      -7,   -32,   -32,   134,   -19,   -32,    84,   133,   133,    83,
-      88,    17,   -32,    17,   -32,   123,   137,    71,   133,   -32,
-     105,   145,    98,   -32,   -32,   152,    17,   -32,   154,   -32,
-     -32,   133,   155,   -32
+      77,   -18,   -24,   -20,   -17,     0,     2,   -16,    13,     7,
+      23,   -78,   -78,    10,    18,    19,    20,    37,    13,    13,
+      62,    13,   -78,   -78,   -78,   -78,   -78,    64,    29,    13,
+     -78,    54,    13,    13,    13,    13,   120,   135,   102,   150,
+      13,   -78,    13,    13,    13,    13,    13,    13,    13,    13,
+      13,   165,    78,    46,    71,    88,   105,   103,   104,    86,
+     107,   -78,   175,   108,   -21,   -21,    81,   -19,   -19,   -78,
+     -78,    39,   194,   111,   118,   -78,   -78,   -78,   -78,    77,
+      77,   117,   109,    13,   -78,   -78,    13,   125,   122,   123,
+     102,    77,   -78,   185,   132,   -78,   145,   -78,   -78,   136,
+      13,   -78,   138,   -78,   -78,   -78,    77,   149,   -78
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -610,28 +611,28 @@ static const yytype_int16 yypact[] =
 static const yytype_int8 yydefact[] =
 {
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     2,     0,    14,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,    16,    17,    19,    20,    18,    21,    15,
-       0,     1,     4,     0,     0,     0,     0,     0,     0,     0,
-      37,     0,    40,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     3,     0,     5,     6,     7,     8,     0,
-       0,     0,     0,    32,    41,     0,    27,    28,    29,    23,
-      24,    25,    26,    30,    31,    10,     0,     0,     0,    38,
-       0,    40,    22,     0,     9,     0,     0,    37,     0,    42,
-      34,     0,    11,    13,    39,     0,     0,    33,     0,    36,
-      35,     0,     0,    12
+       0,     2,    11,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,    15,    16,    18,    19,    17,    20,     0,     0,
+       1,     0,     0,     0,     0,     0,     0,     0,    36,     0,
+      39,    12,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,    31,    40,     0,    26,    27,    28,    22,    23,    24,
+      25,    29,    30,     0,     0,     3,     4,     5,     6,     0,
+       0,    37,     0,    39,    21,     8,     0,     0,     0,     0,
+      36,     0,    41,    33,     0,     7,    13,    10,    38,     0,
+       0,    32,     0,     9,    35,    34,     0,     0,    14
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -32,   -32,   -31,   -32,    -8,   -32,    76,   -32,    87,    94
+     -78,   -78,   -77,   -78,    -8,   -78,    56,   -78,    79,    85
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,    10,    11,    12,    64,    84,    91,    13,    62,    65
+       0,    10,    11,   103,    62,    87,    94,    12,    60,    63
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -639,46 +640,56 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      29,    53,    14,    43,    44,    45,    46,    47,    48,    49,
-      50,    38,    39,    16,    41,    46,    47,    48,    49,    15,
-      48,    49,    52,    17,    18,    19,    55,    56,    57,    58,
-      20,    21,    22,    30,    31,    66,    67,    68,    69,    70,
-      71,    72,    73,    74,    32,    33,    85,    86,    23,    24,
-      25,    26,    27,    28,    59,    34,    35,    95,    36,    37,
-      43,    44,    45,    46,    47,    48,    49,    50,    51,    40,
-     102,    60,    42,    54,    61,    90,    76,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    63,    79,    90,    77,
-      78,    80,    43,    44,    45,    46,    47,    48,    49,    50,
-      51,    75,    82,    83,    87,    88,    98,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    81,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    96,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,     1,     2,     3,     4,
-       5,    92,     6,     7,     8,     9,    43,    44,    45,    46,
-      47,    48,    49,    50,    51,    93,    43,    44,    45,    46,
-      47,    48,    49,    43,    44,    97,    46,    47,    48,    49,
-      99,   101,   100,   103,    94,    89
+      28,    13,    88,    89,    45,    46,    47,    48,    47,    48,
+      36,    37,    15,    39,    99,    18,    16,    19,    14,    17,
+      20,    51,    29,    30,    53,    54,    55,    56,    21,   107,
+      31,    32,    33,    34,    64,    65,    66,    67,    68,    69,
+      70,    71,    72,    41,    22,    23,    24,    25,    26,    27,
+      35,    42,    43,    44,    45,    46,    47,    48,    49,    50,
+      75,    42,    43,    44,    45,    46,    47,    48,    42,    43,
+      44,    45,    46,    47,    48,    49,    50,    38,    93,    40,
+       1,     2,     3,     4,     5,    76,     6,     7,     8,     9,
+      52,    74,    93,    42,    43,    44,    45,    46,    47,    48,
+      49,    50,    77,    42,    43,    59,    45,    46,    47,    48,
+      42,    43,    44,    45,    46,    47,    48,    49,    50,    78,
+      79,    80,    81,    82,    84,    85,    91,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    57,    86,    90,    95,
+      96,    97,    42,    43,    44,    45,    46,    47,    48,    49,
+      50,    58,   101,   102,   104,   106,   105,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    61,   108,    92,    98,
+       0,     0,    42,    43,    44,    45,    46,    47,    48,    49,
+      50,    73,     0,     0,     0,     0,     0,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    83,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,   100,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    42,    43,    44,    45,
+      46,    47,    48,    49
 };
 
 static const yytype_int8 yycheck[] =
 {
-       8,    32,    19,    22,    23,    24,    25,    26,    27,    28,
-      29,    19,    20,    36,    22,    25,    26,    27,    28,    36,
-      27,    28,    30,    36,    36,    15,    34,    35,    36,    37,
-      15,    36,    15,    15,     0,    43,    44,    45,    46,    47,
-      48,    49,    50,    51,    14,    20,    77,    78,    31,    32,
-      33,    34,    35,    36,    16,    13,    13,    88,    13,    13,
-      22,    23,    24,    25,    26,    27,    28,    29,    30,    15,
-     101,    16,    15,    36,     3,    83,    13,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    16,    36,    96,    17,
-      17,    16,    22,    23,    24,    25,    26,    27,    28,    29,
-      30,    16,    16,    19,    21,    17,     8,    22,    23,    24,
+       8,    19,    79,    80,    25,    26,    27,    28,    27,    28,
+      18,    19,    36,    21,    91,    15,    36,    15,    36,    36,
+      36,    29,    15,     0,    32,    33,    34,    35,    15,   106,
+      20,    13,    13,    13,    42,    43,    44,    45,    46,    47,
+      48,    49,    50,    14,    31,    32,    33,    34,    35,    36,
+      13,    22,    23,    24,    25,    26,    27,    28,    29,    30,
+      14,    22,    23,    24,    25,    26,    27,    28,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,    15,    86,    15,
+       3,     4,     5,     6,     7,    14,     9,    10,    11,    12,
+      36,    13,   100,    22,    23,    24,    25,    26,    27,    28,
+      29,    30,    14,    22,    23,     3,    25,    26,    27,    28,
+      22,    23,    24,    25,    26,    27,    28,    29,    30,    14,
+      17,    17,    36,    16,    16,    14,    17,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    16,    19,    21,    14,
+      18,    18,    22,    23,    24,    25,    26,    27,    28,    29,
+      30,    16,    20,     8,    18,    17,   100,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    16,    18,    83,    90,
+      -1,    -1,    22,    23,    24,    25,    26,    27,    28,    29,
+      30,    16,    -1,    -1,    -1,    -1,    -1,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,     3,     4,     5,     6,
-       7,    18,     9,    10,    11,    12,    22,    23,    24,    25,
-      26,    27,    28,    29,    30,    18,    22,    23,    24,    25,
-      26,    27,    28,    22,    23,    20,    25,    26,    27,    28,
-      18,    17,    96,    18,    87,    81
+      25,    26,    27,    28,    29,    30,    22,    23,    24,    25,
+      26,    27,    28,    29
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -686,36 +697,36 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     3,     4,     5,     6,     7,     9,    10,    11,    12,
-      38,    39,    40,    44,    19,    36,    36,    36,    36,    15,
-      15,    36,    15,    31,    32,    33,    34,    35,    36,    41,
-      15,     0,    14,    20,    13,    13,    13,    13,    41,    41,
-      15,    41,    15,    22,    23,    24,    25,    26,    27,    28,
-      29,    30,    41,    39,    36,    41,    41,    41,    41,    16,
-      16,     3,    45,    16,    41,    46,    41,    41,    41,    41,
-      41,    41,    41,    41,    41,    16,    13,    17,    17,    36,
-      16,    21,    16,    19,    42,    39,    39,    21,    17,    46,
-      41,    43,    18,    18,    45,    39,    21,    20,     8,    18,
-      43,    17,    39,    18
+      38,    39,    44,    19,    36,    36,    36,    36,    15,    15,
+      36,    15,    31,    32,    33,    34,    35,    36,    41,    15,
+       0,    20,    13,    13,    13,    13,    41,    41,    15,    41,
+      15,    14,    22,    23,    24,    25,    26,    27,    28,    29,
+      30,    41,    36,    41,    41,    41,    41,    16,    16,     3,
+      45,    16,    41,    46,    41,    41,    41,    41,    41,    41,
+      41,    41,    41,    16,    13,    14,    14,    14,    14,    17,
+      17,    36,    16,    21,    16,    14,    19,    42,    39,    39,
+      21,    17,    46,    41,    43,    14,    18,    18,    45,    39,
+      21,    20,     8,    40,    18,    43,    17,    39,    18
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    37,    38,    39,    39,    40,    40,    40,    40,    40,
-      40,    40,    40,    40,    40,    40,    41,    41,    41,    41,
+       0,    37,    38,    39,    39,    39,    39,    39,    39,    39,
+      39,    39,    39,    40,    40,    41,    41,    41,    41,    41,
       41,    41,    41,    41,    41,    41,    41,    41,    41,    41,
-      41,    41,    41,    42,    43,    43,    44,    45,    45,    45,
-      46,    46,    46
+      41,    41,    42,    43,    43,    44,    45,    45,    45,    46,
+      46,    46
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     3,     2,     4,     4,     4,     4,     6,
-       4,     7,    11,     7,     1,     2,     1,     1,     1,     1,
-       1,     1,     4,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     1,     3,     8,     0,     2,     4,
-       0,     1,     3
+       0,     2,     1,     5,     5,     5,     5,     7,     5,     8,
+       7,     1,     3,     0,     4,     1,     1,     1,     1,     1,
+       1,     4,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     1,     3,     8,     0,     2,     4,     0,
+       1,     3
 };
 
 
@@ -1178,254 +1189,248 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* program: stmts  */
-#line 41 "src/parser.y"
-               { root = (yyvsp[0].node); }
-#line 1185 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+  case 2: /* program: stmt  */
+#line 42 "src/parser.y"
+              { root = (yyvsp[0].node); }
+#line 1196 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 3: /* stmts: stmt SEMICOLON stmts  */
-#line 44 "src/parser.y"
-                            { (yyval.node) = new BlockNode((yyvsp[-2].node), (yyvsp[0].node)); }
-#line 1191 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
-    break;
-
-  case 4: /* stmts: stmt SEMICOLON  */
+  case 3: /* stmt: NUMBER IDENTIFIER ASSIGN expr SEMICOLON  */
 #line 45 "src/parser.y"
-                            { (yyval.node) = (yyvsp[-1].node); }
-#line 1197 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+                                              { (yyval.node) = new AssignNode((yyvsp[-3].sval), "int", (yyvsp[-1].node)); }
+#line 1202 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 5: /* stmt: NUMBER IDENTIFIER ASSIGN expr  */
+  case 4: /* stmt: FLOAT IDENTIFIER ASSIGN expr SEMICOLON  */
+#line 46 "src/parser.y"
+                                             { (yyval.node) = new AssignNode((yyvsp[-3].sval), "float", (yyvsp[-1].node)); }
+#line 1208 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+    break;
+
+  case 5: /* stmt: STRING IDENTIFIER ASSIGN expr SEMICOLON  */
+#line 47 "src/parser.y"
+                                              { (yyval.node) = new AssignNode((yyvsp[-3].sval), "string", (yyvsp[-1].node)); }
+#line 1214 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+    break;
+
+  case 6: /* stmt: BOOL IDENTIFIER ASSIGN expr SEMICOLON  */
 #line 48 "src/parser.y"
-                                    { (yyval.node) = new AssignNode((yyvsp[-2].sval), "int", (yyvsp[0].node)); }
-#line 1203 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+                                            { (yyval.node) = new AssignNode((yyvsp[-3].sval), "bool", (yyvsp[-1].node)); }
+#line 1220 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 6: /* stmt: FLOAT IDENTIFIER ASSIGN expr  */
+  case 7: /* stmt: NUMBER LBRACKET RBRACKET IDENTIFIER ASSIGN array SEMICOLON  */
 #line 49 "src/parser.y"
-                                    { (yyval.node) = new AssignNode((yyvsp[-2].sval), "float", (yyvsp[0].node)); }
-#line 1209 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+                                                                 { (yyval.node) = new ArrayAssignNode((yyvsp[-3].sval), (yyvsp[-1].node)); }
+#line 1226 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 7: /* stmt: STRING IDENTIFIER ASSIGN expr  */
+  case 8: /* stmt: PRINT LPAREN expr RPAREN SEMICOLON  */
 #line 50 "src/parser.y"
-                                    { (yyval.node) = new AssignNode((yyvsp[-2].sval), "string", (yyvsp[0].node)); }
-#line 1215 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+                                         { (yyval.node) = new PrintNode((yyvsp[-2].node)); }
+#line 1232 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 8: /* stmt: BOOL IDENTIFIER ASSIGN expr  */
+  case 9: /* stmt: IF LPAREN expr RPAREN LBRACE stmt RBRACE optional_else  */
 #line 51 "src/parser.y"
-                                    { (yyval.node) = new AssignNode((yyvsp[-2].sval), "bool", (yyvsp[0].node)); }
-#line 1221 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+                                                             { (yyval.node) = new IfNode((yyvsp[-5].node), (yyvsp[-2].node), (yyvsp[0].node)); }
+#line 1238 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 9: /* stmt: NUMBER LBRACKET RBRACKET IDENTIFIER ASSIGN array  */
+  case 10: /* stmt: WHILE LPAREN expr RPAREN LBRACE stmt RBRACE  */
 #line 52 "src/parser.y"
-                                                       { (yyval.node) = new ArrayAssignNode((yyvsp[-2].sval), (yyvsp[0].node)); }
-#line 1227 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+                                                  { (yyval.node) = new WhileNode((yyvsp[-4].node), (yyvsp[-1].node)); }
+#line 1244 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 10: /* stmt: PRINT LPAREN expr RPAREN  */
+  case 11: /* stmt: func_def  */
 #line 53 "src/parser.y"
-                                    { (yyval.node) = new PrintNode((yyvsp[-1].node)); }
-#line 1233 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
-    break;
-
-  case 11: /* stmt: IF LPAREN expr RPAREN LBRACE stmts RBRACE  */
-#line 54 "src/parser.y"
-                                                { (yyval.node) = new IfNode((yyvsp[-4].node), (yyvsp[-1].node), nullptr); }
-#line 1239 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
-    break;
-
-  case 12: /* stmt: IF LPAREN expr RPAREN LBRACE stmts RBRACE ELSE LBRACE stmts RBRACE  */
-#line 55 "src/parser.y"
-                                                                         { (yyval.node) = new IfNode((yyvsp[-8].node), (yyvsp[-5].node), (yyvsp[-1].node)); }
-#line 1245 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
-    break;
-
-  case 13: /* stmt: WHILE LPAREN expr RPAREN LBRACE stmts RBRACE  */
-#line 56 "src/parser.y"
-                                                   { (yyval.node) = new WhileNode((yyvsp[-4].node), (yyvsp[-1].node)); }
-#line 1251 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
-    break;
-
-  case 14: /* stmt: func_def  */
-#line 57 "src/parser.y"
                { (yyval.node) = (yyvsp[0].node); }
-#line 1257 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1250 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 15: /* stmt: RETURN expr  */
+  case 12: /* stmt: RETURN expr SEMICOLON  */
+#line 54 "src/parser.y"
+                            { (yyval.node) = new ReturnNode((yyvsp[-1].node)); }
+#line 1256 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+    break;
+
+  case 13: /* optional_else: %empty  */
+#line 57 "src/parser.y"
+                           { (yyval.node) = nullptr; }
+#line 1262 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+    break;
+
+  case 14: /* optional_else: ELSE LBRACE stmt RBRACE  */
 #line 58 "src/parser.y"
-                  { (yyval.node) = new ReturnNode((yyvsp[0].node)); }
-#line 1263 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+                                       { (yyval.node) = (yyvsp[-1].node); }
+#line 1268 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 16: /* expr: INTEGER  */
+  case 15: /* expr: INTEGER  */
 #line 61 "src/parser.y"
                     { (yyval.node) = new IntNode((yyvsp[0].ival)); }
-#line 1269 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1274 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 17: /* expr: FLOATVAL  */
+  case 16: /* expr: FLOATVAL  */
 #line 62 "src/parser.y"
                     { (yyval.node) = new FloatNode((yyvsp[0].fval)); }
-#line 1275 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1280 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 18: /* expr: STRINGVAL  */
+  case 17: /* expr: STRINGVAL  */
 #line 63 "src/parser.y"
                     { (yyval.node) = new StringNode((yyvsp[0].sval)); }
-#line 1281 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1286 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 19: /* expr: TRUE  */
+  case 18: /* expr: TRUE  */
 #line 64 "src/parser.y"
                     { (yyval.node) = new BoolNode((yyvsp[0].bval)); }
-#line 1287 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1292 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 20: /* expr: FALSE  */
+  case 19: /* expr: FALSE  */
 #line 65 "src/parser.y"
                     { (yyval.node) = new BoolNode((yyvsp[0].bval)); }
-#line 1293 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1298 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 21: /* expr: IDENTIFIER  */
+  case 20: /* expr: IDENTIFIER  */
 #line 66 "src/parser.y"
                     { (yyval.node) = new VarNode((yyvsp[0].sval)); }
-#line 1299 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1304 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 22: /* expr: IDENTIFIER LPAREN call_args RPAREN  */
+  case 21: /* expr: IDENTIFIER LPAREN call_args RPAREN  */
 #line 67 "src/parser.y"
                                          { (yyval.node) = new CallNode((yyvsp[-3].sval), (yyvsp[-1].node)); }
-#line 1305 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1310 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 23: /* expr: expr PLUS expr  */
+  case 22: /* expr: expr PLUS expr  */
 #line 68 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "+", (yyvsp[0].node)); }
-#line 1311 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1316 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 24: /* expr: expr MINUS expr  */
+  case 23: /* expr: expr MINUS expr  */
 #line 69 "src/parser.y"
                       { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "-", (yyvsp[0].node)); }
-#line 1317 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1322 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 25: /* expr: expr MUL expr  */
+  case 24: /* expr: expr MUL expr  */
 #line 70 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "*", (yyvsp[0].node)); }
-#line 1323 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1328 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 26: /* expr: expr DIV expr  */
+  case 25: /* expr: expr DIV expr  */
 #line 71 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "/", (yyvsp[0].node)); }
-#line 1329 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1334 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 27: /* expr: expr GT expr  */
+  case 26: /* expr: expr GT expr  */
 #line 72 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), ">", (yyvsp[0].node)); }
-#line 1335 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1340 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 28: /* expr: expr LT expr  */
+  case 27: /* expr: expr LT expr  */
 #line 73 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "<", (yyvsp[0].node)); }
-#line 1341 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1346 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 29: /* expr: expr EQ expr  */
+  case 28: /* expr: expr EQ expr  */
 #line 74 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "==", (yyvsp[0].node)); }
-#line 1347 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1352 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 30: /* expr: expr AND expr  */
+  case 29: /* expr: expr AND expr  */
 #line 75 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "&&", (yyvsp[0].node)); }
-#line 1353 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1358 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 31: /* expr: expr OR expr  */
+  case 30: /* expr: expr OR expr  */
 #line 76 "src/parser.y"
                      { (yyval.node) = new BinaryOpNode((yyvsp[-2].node), "||", (yyvsp[0].node)); }
-#line 1359 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1364 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 32: /* expr: LPAREN expr RPAREN  */
+  case 31: /* expr: LPAREN expr RPAREN  */
 #line 77 "src/parser.y"
                          { (yyval.node) = (yyvsp[-1].node); }
-#line 1365 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1370 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 33: /* array: LBRACKET expr_list RBRACKET  */
+  case 32: /* array: LBRACKET expr_list RBRACKET  */
 #line 80 "src/parser.y"
                                    { (yyval.node) = (yyvsp[-1].node); }
-#line 1371 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1376 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 34: /* expr_list: expr  */
+  case 33: /* expr_list: expr  */
 #line 83 "src/parser.y"
                 { (yyval.node) = new ExprListNode((yyvsp[0].node)); }
-#line 1377 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1382 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 35: /* expr_list: expr COMMA expr_list  */
+  case 34: /* expr_list: expr COMMA expr_list  */
 #line 84 "src/parser.y"
                                 { (yyval.node) = new ExprListNode((yyvsp[-2].node), (yyvsp[0].node)); }
-#line 1383 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1388 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 36: /* func_def: FUNCTION IDENTIFIER LPAREN param_list RPAREN LBRACE stmts RBRACE  */
+  case 35: /* func_def: FUNCTION IDENTIFIER LPAREN param_list RPAREN LBRACE stmt RBRACE  */
 #line 87 "src/parser.y"
-                                                                           { (yyval.node) = new FunctionNode((yyvsp[-6].sval), (yyvsp[-4].node), (yyvsp[-1].node)); }
-#line 1389 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+                                                                          { (yyval.node) = new FunctionNode((yyvsp[-6].sval), (yyvsp[-4].node), (yyvsp[-1].node)); }
+#line 1394 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 37: /* param_list: %empty  */
+  case 36: /* param_list: %empty  */
 #line 90 "src/parser.y"
                         { (yyval.node) = nullptr; }
-#line 1395 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1400 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 38: /* param_list: NUMBER IDENTIFIER  */
+  case 37: /* param_list: NUMBER IDENTIFIER  */
 #line 91 "src/parser.y"
                               { (yyval.node) = new ParamNode((yyvsp[0].sval), "int"); }
-#line 1401 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1406 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 39: /* param_list: NUMBER IDENTIFIER COMMA param_list  */
+  case 38: /* param_list: NUMBER IDENTIFIER COMMA param_list  */
 #line 92 "src/parser.y"
                                                { (yyval.node) = new ParamNode((yyvsp[-2].sval), "int", (yyvsp[0].node)); }
-#line 1407 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1412 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 40: /* call_args: %empty  */
+  case 39: /* call_args: %empty  */
 #line 95 "src/parser.y"
                        { (yyval.node) = nullptr; }
-#line 1413 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1418 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 41: /* call_args: expr  */
+  case 40: /* call_args: expr  */
 #line 96 "src/parser.y"
                 { (yyval.node) = new ExprListNode((yyvsp[0].node)); }
-#line 1419 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1424 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
-  case 42: /* call_args: expr COMMA call_args  */
+  case 41: /* call_args: expr COMMA call_args  */
 #line 97 "src/parser.y"
                                 { (yyval.node) = new ExprListNode((yyvsp[-2].node), (yyvsp[0].node)); }
-#line 1425 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1430 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
     break;
 
 
-#line 1429 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
+#line 1434 "/home/j47/Documents/Compiler/Compiler-design/BanglaCompiler/build/parser.tab.c"
 
       default: break;
     }
@@ -1619,6 +1624,3 @@ yyreturnlab:
 }
 
 #line 99 "src/parser.y"
-
-
-/* No main() here */
