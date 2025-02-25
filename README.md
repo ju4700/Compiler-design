@@ -1,4 +1,4 @@
-### **BPL** (Bangla Programming Language) is a custom compiler where **keywords, variables, and syntax** are written in **Bangla**. Built with **C++ (Flex, Bison, and LLVM)**, this compiler allows Bangla-speaking developers to write and execute code in their native language.  
+### Bangla Programming Language is a custom compiler where **keywords, variables, and syntax** are written in **Bangla**. Built with **C++ (Flex, Bison, and LLVM)**, this compiler allows Bangla-speaking developers to write and execute code in their native language.  
 
 🔹 **Key Features:**  
 ✅ **Fully Bangla-based syntax** (variables, functions, conditionals)  
