@@ -22,7 +22,8 @@ extern ASTNode* root;
 }
 
 %token NUMBER FLOAT STRING BOOL IF ELSE WHILE FUNCTION RETURN PRINT
-%token ASSIGN SEMICOLON LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA GT LT EQ PLUS MINUS MUL DIV AND OR
+%token ASSIGN SEMICOLON LPAREN RPAREN LBRACE RBRACE LBRACKET RBRACKET COMMA
+%token GT LT EQ GE LE NE PLUS MINUS MUL DIV AND OR NOT
 %token <ival> INTEGER
 %token <fval> FLOATVAL
 %token <bval> TRUE FALSE
@@ -32,8 +33,9 @@ extern ASTNode* root;
 
 %left OR
 %left AND
-%left EQ
-%left GT LT
+%right NOT
+%left EQ NE
+%left GT LT GE LE
 %left PLUS MINUS
 %left MUL DIV
 
@@ -44,13 +46,14 @@ program: stmts { root = $1; }
 
 stmts: stmt SEMICOLON stmts { $$ = new BlockNode($1, $3); }
      | stmt SEMICOLON { $$ = $1; }
-     | stmt { $$ = $1; }  // Allow standalone stmt without SEMICOLON
+     | stmt { $$ = $1; }
      ;
 
 stmt: NUMBER IDENTIFIER ASSIGN expr { $$ = new AssignNode($2, "int", $4); }
     | FLOAT IDENTIFIER ASSIGN expr { $$ = new AssignNode($2, "float", $4); }
     | STRING IDENTIFIER ASSIGN expr { $$ = new AssignNode($2, "string", $4); }
     | BOOL IDENTIFIER ASSIGN expr { $$ = new AssignNode($2, "bool", $4); }
+    | IDENTIFIER ASSIGN expr { $$ = new ReassignNode($1, $3); }
     | NUMBER LBRACKET RBRACKET IDENTIFIER ASSIGN array { $$ = new ArrayAssignNode($4, $6); }
     | PRINT LPAREN expr RPAREN { $$ = new PrintNode($3); }
     | IF LPAREN expr RPAREN LBRACE stmts RBRACE optional_else { $$ = new IfNode($3, $6, $8); }
@@ -76,9 +79,13 @@ expr: INTEGER { $$ = new IntNode($1); }
     | expr DIV expr { $$ = new BinaryOpNode($1, "/", $3); }
     | expr GT expr { $$ = new BinaryOpNode($1, ">", $3); }
     | expr LT expr { $$ = new BinaryOpNode($1, "<", $3); }
+    | expr GE expr { $$ = new BinaryOpNode($1, ">=", $3); }
+    | expr LE expr { $$ = new BinaryOpNode($1, "<=", $3); }
     | expr EQ expr { $$ = new BinaryOpNode($1, "==", $3); }
+    | expr NE expr { $$ = new BinaryOpNode($1, "!=", $3); }
     | expr AND expr { $$ = new BinaryOpNode($1, "&&", $3); }
     | expr OR expr { $$ = new BinaryOpNode($1, "||", $3); }
+    | NOT expr { $$ = new UnaryOpNode("!", $2); }
     | LPAREN expr RPAREN { $$ = $2; }
     ;
 
